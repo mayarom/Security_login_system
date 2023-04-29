@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,700" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: 'Roboto Slab', serif;
+            background: linear-gradient(135deg, #58B7FF 0%, #C3E2FF 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            color: #FFFFFF;
+            font-size: 4em;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+        }
+
+        p {
+            font-size: 1.5em;
+            color: #FFFFFF;
+            font-weight: 400;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .buttons-container {
+            display: flex;
+        }
+
+        a {
+            color: #FFFFFF;
+            text-decoration: none;
+            font-size: 1.3em;
+            padding: 15px 30px;
+            border: 2px solid #FFFFFF;
+            border-radius: 50px;
+            background-color: transparent;
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+            margin: 0 10px;
+        }
+
+        a:hover {
+            text-decoration: none;
+            color: #FFFFFF;
+            background-color: #58B7FF;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <h1>User Profile</h1>
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>Password:</strong> {{ user.password }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <div class="buttons-container">
+        <a href="{{ url_for('edit_user_profile', username=user.username) }}">Edit Profile</a>
+        <a href="{{ url_for('home') }}">Logout</a>
+    </div>
+</body>
+</html>

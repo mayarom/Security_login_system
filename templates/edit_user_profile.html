@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User</title>
+    <link href="https://fonts.googleapis.com/css?family=Segoe+UI:400,700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #333;
+        }
+
+        .logo {
+            color: #fff;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+        }
+
+        .nav-link {
+            color: #fff;
+            font-size: 1.2em;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-left: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-link:hover {
+            background-color: #fff;
+            color: #333;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+            padding: 40px;
+            margin-top: 50px;
+        }
+
+        h1 {
+            color: #ffffff;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .profile {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            width: 600px;
+            text-align: center;
+        }
+
+        .profile h2 {
+            margin-top: 0;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .profile label {
+            display: block;
+            font-size: 1.1em;
+            color: #333;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .profile input {
+            font-size: 1em;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            margin-right: 10px;
+            width: 100%;
+        }
+
+        .profile input[type="submit"] {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .profile input[type="submit"]:hover {
+            background-color: #fff;
+            color: #333;
+        }
+    </style>
+
+</head>
+
+<body>
+    <header class="header">
+        <div class="logo">Logo</div>
+        <nav class="nav-links">
+            <a class="nav-link" href="{{ url_for('user_dashboard') }}">Dashboard</a>
+            <a class="nav-link" href="{{ url_for('home') }}">Logout</a>
+        </nav>
+    </header>
+    <main class="main-content">
+        <div class="container mt-5">
+            <h1>Edit User</h1>
+            <div class="profile">
+                <h2>Update User</h2>
+                <form action="{{ url_for('edit_user_profile', username=user.username) }}" method="POST">
+                    <label for="old_password">Old Password</label>
+                    <input type="password" name="old_password" id="old_password" required>
+                    <label for="new_password">New Password</label>
+                    <input type="password" name="new_password" id="new_password" required>
+
+                    <label for="new_username">New Username</label>
+                    <input type="text" name="new_username" id="new_username" value="{{ user.username }}" required>
+
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" value="{{ user.email }}" required>
+
+                    <input type="submit" value="Update User">
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

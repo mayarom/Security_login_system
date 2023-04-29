@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>My Website</title>
+  <style>
+    /* Styles for the container */
+    .container {
+      margin: 0 auto;
+      max-width: 800px;
+      text-align: center;
+      padding: 40px;
+    }
+    
+    .container h1 {
+      margin-bottom: 40px;
+    }
+
+    /* Styles for the header */
+    .header {
+      background-color: #333;
+      color: white;
+      padding: 20px;
+      text-align: right;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+    }
+
+    .header a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+    }
+
+    .header a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    {% if is_authenticated %}
+      {% if is_admin %}
+        <a href="{{ url_for('admin_dashboard') }}">Admin Dashboard</a>
+        <a href="{{ url_for('admin_profile') }}">Admin Profile</a>
+      {% else %}
+        <a href="{{ url_for('user_dashboard') }}">User Dashboard</a>
+        <a href="{{ url_for('user_profile') }}">User Profile</a>
+      {% endif %}
+      <a href="{{ url_for('logout') }}">Logout</a>
+    {% else %}
+      <a href="{{ url_for('user_login') }}">Login</a>
+      <a href="{{ url_for('register') }}">Register</a>
+    {% endif %}
+  </div>
+
+
+  <div class="footer">
+    <p>Follow us on social media:</p>
+    <div class="social-media-icons">
+      <a href="#"><i class="fa fa-facebook"></i></a>
+      <a href="#"><i class="fa fa-twitter"></i></a>
+      <a href="#"><i class="fa fa-instagram"></i></a>
+    </div>
+  </div>
+</body>
+</html>
