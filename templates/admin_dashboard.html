@@ -11,7 +11,7 @@
     <style>
         body {
             font-family: 'Roboto Slab', serif;
-            background: linear-gradient(135deg, #58B7FF 0%, #C3E2FF 100%);
+            background: linear-gradient(135deg, #3D7EAA 0%, #57B7FF 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -33,6 +33,9 @@
             width: 90%;
             margin: 0 auto;
             margin-bottom: 50px;
+            background-color: #FFFFFF;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
         }
 
         th,
@@ -41,12 +44,12 @@
             padding: 10px;
             border: 1px solid #ddd;
             font-size: 1.2em;
-            color: #FFFFFF;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            color: #333;
         }
 
         th {
-            background-color: #333;
+            background-color: #3D7EAA;
+            color: #FFFFFF;
         }
 
         tr:nth-child(even) {
@@ -71,15 +74,15 @@
             text-decoration: none;
             color: #fff;
             border-radius: 5px;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .admin-profile {
-            background-color: #333;
+            background-color: #3D7EAA;
         }
 
         .admin-logout {
-            background-color: #333;
+            background-color: #E63946;
         }
 
         .admin-button:hover {
@@ -112,14 +115,9 @@
                 {% endfor %}
             </tbody>
         </table>
-    </div>
-    <div class="admin-buttons">
-        <a href="{{ url_for('admin_profile', username=admin.username) }}" class="admin-button admin-logout">Admin profile</a>
-
-        <a href="{{ url_for('logout') }}" class="admin-button admin-logout">Logout</a>
+        <div class="admin-buttons">
+            <a class="admin-button admin-profile" href="/admin_profile">Profile</a>
+            <a class="admin-button admin-logout" href="/home">Logout</a>
+        </div>
     </div>
 </body>
-
-
-
-</html>

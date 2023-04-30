@@ -5,8 +5,9 @@ from flask import jsonify
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from security import check_password_hash_compat
-from flask import Flask, render_template, request, redirect, url_for, session
 from flask import flash
+from security import password_policy, is_valid_email
+from flask import Flask, render_template, request, redirect, url_for, session
 
 
 app = Flask(__name__)
@@ -97,9 +98,6 @@ def admin_login():
     return render_template('admin_login.html')
 
 
-...
-
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -107,8 +105,14 @@ def register():
         username = request.form['username']
         password = request.form['password']
 
-        print(
-            f"Registering user: {username}, email: {email}, password: {password}")
+        # Check password policy
+        if not password_policy(password):
+            flash("Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character")
+            return render_template('register.html')
+        
+        if not is_valid_email(email):
+            flash("Please provide a valid email address")
+            return render_template('register.html')
 
         db = Database()
         try:
@@ -118,12 +122,14 @@ def register():
                      (email, username, hashed_password))
             db.con.commit()
             db.close()
-            print("User registered successfully")
+            print(
+                f"User registered successfully: {username}, email: {email}, password: {password}")
             return redirect(url_for('user_login'))
         except Exception as e:
             db.con.rollback()
             db.close()
             print(f"Error: {str(e)}")
+            flash(str(e))
             return render_template('register.html', error=str(e))
     else:
         return render_template('register.html')
@@ -171,6 +177,9 @@ def user_profile():
     db = Database()
     user = db.query(
         'SELECT * FROM users WHERE username = %s', (session['user'],))[0]
+    #fill the email and username fields with the current values
+    
+
     db.close()
 
     return render_template('user_profile.html', user=user)
@@ -186,8 +195,8 @@ def admin_profile():
         return render_template('admin_profile.html', admin=admin)
     else:
         return redirect(url_for('admin_login'))
-    
-    
+
+
 @app.route('/edit_user_profile', methods=['GET', 'POST'])
 def edit_user_profile():
     if 'user' not in session:
@@ -202,7 +211,8 @@ def edit_user_profile():
         db = Database()
         try:
             print(f"Fetching user: {session['user']}")
-            user = db.query_one('SELECT * FROM users WHERE username = %s', (session['user'],))
+            user = db.query_one(
+                'SELECT * FROM users WHERE username = %s', (session['user'],))
             print(f"User fetched: {user}")
 
             if not check_password_hash(user['password'], old_password):
@@ -223,13 +233,15 @@ def edit_user_profile():
     else:
         db = Database()
         print(f"Fetching user: {session['user']}")
-        user = db.query_one('SELECT * FROM users WHERE username = %s', (session['user'],))
+        user = db.query_one(
+            'SELECT * FROM users WHERE username = %s', (session['user'],))
 
         print(f"User fetched: {user}")
         db.close()
 
         return render_template('edit_user_profile.html', user=user)
-    
+
+
 @app.route('/edit_admin_profile', methods=['GET', 'POST'])
 def edit_admin_profile():
     if 'admin' not in session:
@@ -244,7 +256,8 @@ def edit_admin_profile():
         db = Database()
         try:
             print(f"Fetching admin: {session['admin']}")
-            admin = db.query_one('SELECT * FROM admin_users WHERE username = %s', (session['admin'],))
+            admin = db.query_one(
+                'SELECT * FROM admin_users WHERE username = %s', (session['admin'],))
             print(f"Admin fetched: {admin}")
 
             if not check_password_hash(admin['password'], old_password):
@@ -265,14 +278,13 @@ def edit_admin_profile():
     else:
         db = Database()
         print(f"Fetching admin: {session['admin']}")
-        admin = db.query_one('SELECT * FROM admin_users WHERE username = %s', (session['admin'],))
+        admin = db.query_one(
+            'SELECT * FROM admin_users WHERE username = %s', (session['admin'],))
 
         print(f"Admin fetched: {admin}")
         db.close()
 
         return render_template('edit_admin_profile.html', admin=admin)
-
-
 
 
 if __name__ == '__main__':

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,115 +16,143 @@
             height: 100vh;
             margin: 0;
         }
+
         h1 {
-        color: #ffffff;
-        font-size: 3em;
-        font-weight: bold;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-        margin-bottom: 20px;
-    }
+            color: #ffffff;
+            font-size: 3em;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
 
-    form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 30px;
-        border-radius: 10px;
-        width: 300px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            width: 300px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
 
-    label {
-        font-size: 1.1em;
-        color: #333;
-        margin-bottom: 10px;
-    }
+        label {
+            font-size: 1.1em;
+            color: #333;
+            margin-bottom: 10px;
+        }
 
-    input {
-        font-size: 1em;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        width: 100%;
-        margin-bottom: 20px;
-    }
+        input {
+            font-size: 1em;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
 
-    input:invalid {
-        border-color: #dc3545;
-    }
+        input:invalid {
+            border-color: #dc3545;
+        }
 
-    input:invalid:focus {
-        border-color: #dc3545;
-        box-shadow: 0px 0px 5px rgba(220, 53, 69, 0.5);
-    }
+        input:invalid:focus {
+            border-color: #dc3545;
+            box-shadow: 0px 0px 5px rgba(220, 53, 69, 0.5);
+        }
 
-    input:focus {
-        outline: none;
-        box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
-    }
+        input:focus {
+            outline: none;
+            box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+        }
 
-    button {
-        font-size: 1em;
-        padding: 10px 20px;
-        background-color: #3498db;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.2s;
-    }
+        button {
+            font-size: 1em;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
 
-    button:hover {
-        background-color: #2980b9;
-    }
+        button:hover {
+            background-color: #2980b9;
+        }
 
-    p {
-        margin-top: 20px;
-        font-size: 1.2em;
-        color: #ffffff;
-        font-weight: bold;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-    }
+        p {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #ffffff;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
 
-    a {
-        color: #84fab0;
-        text-decoration: none;
-        font-size: 1.2em;
-    }
+        a {
+            color: #84fab0;
+            text-decoration: none;
+            font-size: 1.2em;
+        }
 
-    a:hover {
-        text-decoration: underline;
-    }
-</style>
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .flashes {
+            list-style-type: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .flashes li {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
+
 <body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class="flashes">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
     <h1>Register</h1>
     <form action="{{ url_for('register') }}" method="POST">
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required>
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required>
-    
+
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required minlength="8">
-    
+
         <label for="confirm-password">Confirm Password:</label>
-        <input type="password" id="confirm-password" name="confirm_password" required minlength="8" oninput="checkPasswordMatch()">
-    
+        <input type="password" id="confirm-password" name="confirm_password" required minlength="8"
+            oninput="checkPasswordMatch()">
+
         <span id="password-match-message"></span>
-    
+
         <button type="submit">Register</button>
     </form>
-    
+
     <p><a href="/">Back to home</a></p>
-    
+
     <script>
         function checkPasswordMatch() {
             var password = document.getElementById("password");
             var confirm_password = document.getElementById("confirm-password");
             var message = document.getElementById("password-match-message");
-    
+
             if (password.value != confirm_password.value) {
                 message.style.color = "#dc3545";
                 message.innerHTML = "Passwords do not match";
@@ -134,5 +163,5 @@
         }
     </script>
 </body>
-</html>
 
+</html>
