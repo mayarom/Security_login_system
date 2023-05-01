@@ -10,7 +10,7 @@
     <style>
         body {
             font-family: 'Roboto Slab', serif;
-            background: linear-gradient(135deg, #58B7FF 0%, #C3E2FF 100%);
+            background: linear-gradient(135deg, #001f3f 0%, #0c5460 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -27,41 +27,187 @@
             margin-bottom: 40px;
         }
 
+        p {
+            font-size: 1.5em;
+            color: #FFFFFF;
+            font-weight: 400;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .buttons-container {
+            display: flex;
+        }
+
+        a {
+            color: #FFFF00;
+            text-decoration: none;
+            font-size: 1.3em;
+            padding: 15px 30px;
+            border: 2px solid #FFFF00;
+            border-radius: 50px;
+            background-color: transparent;
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+            margin: 0 10px;
+        }
+
+        a:hover {
+            text-decoration: none;
+            color: #02203f;
+            background-color: #FFFF00;
+            box-shadow: 0px 0px 10px rgba(255, 255, 0, 0.5);
+        }
+
+        /* Apply these styles to the rest of the page */
+
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fff;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 4em;
+            margin: 0;
+            text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        span {
+            font-size: 1.2em;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 10px;
+            margin-top: -30px;
+            text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+        }
+
         form {
             display: flex;
             flex-direction: column;
             align-items: center;
+            background-color: #242323;
+            padding: 30px;
+            border-radius: 25px;
+            width: 450px;
+            box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.1);
         }
 
         label {
-            font-size: 1.3em;
-            color: #FFFFFF;
-            font-weight: 400;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            font-size: 1.1em;
+            color: #fff;
             margin-bottom: 10px;
         }
 
         input {
-            font-size: 1.2em;
-            padding: 5px 10px;
+            font-size: 1em;
+            padding: 10px;
+            border: 2px solid #8e8e8e;
+            border-radius: 5px;
+            width: 100%;
             margin-bottom: 20px;
+            background-color: transparent;
+            color: #fff;
+        }
+
+        input:invalid {
+            border-color: #ffcc00;
+        }
+
+        input:invalid:focus {
+            border-color: #ffcc00;
+            box-shadow: 0px 0px 5px rgba(255, 204, 0, 0.5);
+        }
+
+        input:focus {
+            outline: none;
+            box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
+        }
+
+        p {
+            font-size: 1.5em;
+            color: #FFFFFF;
+            font-weight: 400;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .buttons-container {
+            display: flex;
         }
 
         button {
-            color: #FFFFFF;
-            font-size: 1.3em;
-            padding: 15px 30px;
-            border: 2px solid #FFFFFF;
-            border-radius: 50px;
-            background-color: transparent;
-            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+            font-size: 1em;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+            background-color: #1e3a8a;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
         }
 
         button:hover {
-            color: #FFFFFF;
-            background-color: #58B7FF;
-            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
+            background-color: #1b3069;
+            color: #fff;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        button:focus {
+            outline: none;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        a {
+            color: #FFFF00;
+            text-decoration: none;
+            font-size: 1.3em;
+            padding: 15px 30px;
+            border: 2px solid #FFFF00;
+            border-radius: 50px;
+            background-color: transparent;
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+            margin: 0 10px;
+        }
+
+        a:hover {
+            text-decoration: none;
+            color: #001f3f;
+            background-color: #FFFF00;
+            box-shadow: 0px 0px 10px rgba(255, 255, 0, 0.5);
+        }
+
+
+        /* Apply these styles to flash messages in my HTML */
+        .flashes {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .flashes li {
+            background-color: #F1ECEB;
+            color: #343a40;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        /* Apply these styles to password match messages in my HTML */
+        #password-match-message {
+            margin-top: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            color: #fff;
         }
     </style>
 </head>

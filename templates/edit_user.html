@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto Slab', serif;
+            background: linear-gradient(135deg, #001f3f 0%, #0c5460 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            color: #FFFFFF;
+            font-size: 4em;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+        }
+
+        .container {
+            background-color: #2b2b2b;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            padding: 40px;
+        }
+
+        label {
+            color: #FFFFFF;
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        input[type=text], input[type=email] {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            width: 100%;
+            background-color: #444;
+            color: #FFF;
+            margin-bottom: 20px;
+        }
+
+        select {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            width: 100%;
+            background-color: #444;
+            color: #FFF;
+            margin-bottom: 20px;
+        }
+
+        option {
+            background-color: #444;
+        }
+
+        .btn-primary {
+            background-color: #FFFF00;
+            color: #001f3f;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 5px;
+            font-size: 1.3em;
+            font-weight: 700;
+            text-transform: uppercase;
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background-color: #001f3f;
+            color: #FFFF00;
+            box-shadow: 0px 0px 10px rgba(255, 255, 0, 0.5);
+        }
+
+        .alert-danger {
+            background-color: #cc0000;
+            color: #FFFFFF;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit User</h1>
+        {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+        <form method="POST" action="{{ url_for('edit_user', id=user.id) }}">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" value="{{ user.username }}" required> 
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="{{ user.email }}" required>
+            </div>
+            <div class="form-group">
+                <label for="role">Role</label>
+                <select id="role" name="role" required>
+                    <option value="admin" {% if user.role == 'admin' %} selected {% endif %}>Admin</option>
+                    <option value="user" {% if user.role == 'user' %} selected {% endif %}>User</option>
+                </select>
+            </div>
+            <button type="submit" class="btn-primary">Update</button>
+        </form>
+    </div>
+</body>
+</html>
+

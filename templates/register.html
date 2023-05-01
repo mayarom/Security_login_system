@@ -4,11 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/favicon.png">
     <title>Register</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #001f3f 0%, #0c5460 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -18,99 +21,193 @@
         }
 
         h1 {
-            color: #ffffff;
-            font-size: 3em;
-            font-weight: bold;
+            color: #FFFFFF;
+            font-size: 4em;
+            font-weight: 700;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-            margin-bottom: 20px;
+            margin-bottom: 40px;
+        }
+
+        p {
+            font-size: 1.5em;
+            color: #FFFFFF;
+            font-weight: 400;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .buttons-container {
+            display: flex;
+        }
+
+
+        a {
+            color: #FFFF00;
+            text-decoration: none;
+            font-size: 1.3em;
+            padding: 15px 30px;
+            border: 2px solid #FFFF00;
+            border-radius: 50px;
+            background-color: transparent;
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+            margin: 0 10px;
+        }
+
+        a:hover {
+            text-decoration: none;
+            color: #001f3f;
+            background-color: #FFFF00;
+            box-shadow: 0px 0px 10px rgba(255, 255, 0, 0.5);
+        }
+
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fff;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 4em;
+            margin: 0;
+            text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        span {
+            font-size: 1.2em;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 10px;
+            margin-top: -30px;
+            text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
         }
 
         form {
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(30, 30, 30, 0.85);
             padding: 30px;
-            border-radius: 10px;
-            width: 300px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 25px;
+            width: 450px;
+            box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.1);
         }
 
         label {
             font-size: 1.1em;
-            color: #333;
+            color: #fff;
             margin-bottom: 10px;
         }
 
         input {
             font-size: 1em;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 2px solid #8e8e8e;
             border-radius: 5px;
             width: 100%;
             margin-bottom: 20px;
+            background-color: transparent;
+            color: #fff;
         }
 
         input:invalid {
-            border-color: #dc3545;
+            border-color: #ffcc00;
         }
 
         input:invalid:focus {
-            border-color: #dc3545;
-            box-shadow: 0px 0px 5px rgba(220, 53, 69, 0.5);
+            border-color: #ffcc00;
+            box-shadow: 0px 0px 5px rgba(255, 204, 0, 0.5);
         }
 
         input:focus {
             outline: none;
-            box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+            box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
+        }
+
+        p {
+            font-size: 1.5em;
+            color: #FFFFFF;
+            font-weight: 400;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .buttons-container {
+            display: flex;
         }
 
         button {
             font-size: 1em;
             padding: 10px 20px;
-            background-color: #3498db;
-            color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+            background-color: #1e3a8a;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
         }
 
         button:hover {
-            background-color: #2980b9;
+            background-color: #1b3069;
+            color: #fff;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
         }
 
-        p {
-            margin-top: 20px;
-            font-size: 1.2em;
-            color: #ffffff;
-            font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        button:focus {
+            outline: none;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
         }
 
         a {
-            color: #84fab0;
+            color: #FFFF00;
             text-decoration: none;
-            font-size: 1.2em;
+            font-size: 1.3em;
+            padding: 15px 30px;
+            border: 2px solid #FFFF00;
+            border-radius: 50px;
+            background-color: transparent;
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+            margin: 0 10px;
         }
 
         a:hover {
-            text-decoration: underline;
+            text-decoration: none;
+            color: #001f3f;
+            background-color: #FFFF00;
+            box-shadow: 0px 0px 10px rgba(255, 255, 0, 0.5);
         }
 
+
+        /* Apply these styles to flash messages in my HTML */
         .flashes {
             list-style-type: none;
+            margin: 0;
             padding: 0;
             margin-bottom: 20px;
         }
 
         .flashes li {
-            background-color: rgba(255, 255, 255, 0.9);
-            color: #333;
+            background-color: #F1ECEB;
+            color: #343a40;
             font-weight: bold;
             padding: 10px;
             border-radius: 5px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        /* Apply these styles to password match messages in my HTML */
+        #password-match-message {
+            margin-top: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            color: #fff;
         }
     </style>
 </head>
@@ -145,7 +242,7 @@
         <button type="submit">Register</button>
     </form>
 
-    <p><a href="/">Back to home</a></p>
+    <p><a href="/">Back to home</a> </p>
 
     <script>
         function checkPasswordMatch() {

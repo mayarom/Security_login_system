@@ -1,17 +1,13 @@
-from werkzeug.security import generate_password_hash
-from flask import Flask, render_template, request, redirect, url_for, session
-import mysql.connector as connector
-from flask import jsonify
+
 from datetime import datetime
-from werkzeug.security import generate_password_hash, check_password_hash
-from security import check_password_hash_compat
-from flask import flash
-from security import password_policy, is_valid_email
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify, flash
+import mysql.connector as connector
+from werkzeug.security import check_password_hash
+from security import hash_password, password_policy, is_valid_email, aragon_verify_password, aragon_hash_password, secret_key
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '655f09d18cffb9fccdb80addef80754546ca068bebea420fa4e4afdad1d0548a'
+app.secret_key = secret_key
 
 
 class Database:
@@ -57,16 +53,15 @@ def user_login():
         if len(result) == 1:
             user = result[0]
             # Compare the hashed passwords
-            if check_password_hash_compat(user[3], password):
+            stored_password_hash = user[3]
+            submitted_password = password
+            if aragon_verify_password(stored_password_hash, submitted_password):
                 session['user'] = username
                 print("User login successful")
                 return redirect(url_for('user_dashboard'))
             else:
-                print("Invalid username or password")
+                flash("Invalid username or password")
                 return render_template('user_login.html', error='Invalid username or password')
-        else:
-            print("Invalid username or password")
-            return render_template('user_login.html', error='Invalid username or password')
     else:
         return render_template('user_login.html')
 
@@ -86,7 +81,8 @@ def admin_login():
         if len(result) == 1:
             admin = result[0]
             # Compare the hashed passwords
-            if check_password_hash_compat(admin[1], password):
+            stored_password_hash = admin[1]
+            if aragon_verify_password(stored_password_hash, password):
                 session['admin'] = username
                 print("Admin login successful")
                 return redirect(url_for('admin_dashboard'))
@@ -109,7 +105,7 @@ def register():
         if not password_policy(password):
             flash("Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character")
             return render_template('register.html')
-        
+
         if not is_valid_email(email):
             flash("Please provide a valid email address")
             return render_template('register.html')
@@ -117,7 +113,11 @@ def register():
         db = Database()
         try:
             # Hash the password before inserting it into the database
-            hashed_password = generate_password_hash(password)
+            hashed_password = aragon_hash_password(password)
+            if not hashed_password:
+                flash("Password does not meet the requirements")
+                return render_template('register.html')
+
             db.query('INSERT INTO users (email, username, password) VALUES (%s, %s, %s)',
                      (email, username, hashed_password))
             db.con.commit()
@@ -164,8 +164,11 @@ def admin_dashboard():
 
 @app.route('/logout')
 def logout():
-    session.pop('user', None)
-    session.pop('admin', None)
+    if 'user' in session:
+        session.pop('user', None)
+    if 'admin' in session:
+        session.pop('admin', None)
+
     return redirect(url_for('home'))
 
 
@@ -177,8 +180,6 @@ def user_profile():
     db = Database()
     user = db.query(
         'SELECT * FROM users WHERE username = %s', (session['user'],))[0]
-    #fill the email and username fields with the current values
-    
 
     db.close()
 
@@ -191,6 +192,10 @@ def admin_profile():
         db = Database()
         admin = db.query(
             'SELECT * FROM admin_users WHERE username = %s', (session['admin'],))[0]
+        # desplay all details of admin  in admin_profile.html
+        
+        
+
         db.close()
         return render_template('admin_profile.html', admin=admin)
     else:
@@ -218,7 +223,7 @@ def edit_user_profile():
             if not check_password_hash(user['password'], old_password):
                 raise Exception("Old password does not match")
 
-            hashed_password = generate_password_hash(new_password)
+            hashed_password = hash_password(new_password)
             db.query('UPDATE users SET username = %s, email = %s, password = %s WHERE username = %s',
                      (new_username, email, hashed_password, session['user']))
             db.con.commit()
@@ -263,7 +268,7 @@ def edit_admin_profile():
             if not check_password_hash(admin['password'], old_password):
                 raise Exception("Old password does not match")
 
-            hashed_password = generate_password_hash(new_password)
+            hashed_password = hash_password(new_password)
             db.query('UPDATE admin_users SET username = %s, email = %s, password = %s WHERE username = %s',
                      (new_username, email, hashed_password, session['admin']))
             db.con.commit()
@@ -285,6 +290,76 @@ def edit_admin_profile():
         db.close()
 
         return render_template('edit_admin_profile.html', admin=admin)
+
+
+@app.route('/add_user', methods=['GET', 'POST'])
+def add_user():
+    if 'admin' not in session:
+        return redirect(url_for('admin_login'))
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        email = request.form['email']
+
+        db = Database()
+        try:
+            hashed_password = hash_password(password)
+            db.query('INSERT INTO users (username, email, password) VALUES (%s, %s, %s)',
+                     (username, email, hashed_password))
+            db.con.commit()
+            db.close()
+            print("User added successfully")
+            return redirect(url_for('admin_dashboard'))
+        except Exception as e:
+            db.con.rollback()
+            db.close()
+            print(f"Error: {str(e)}")
+            return render_template('add_user.html', error=str(e))
+
+    else:
+        return render_template('add_user.html')
+
+
+@app.route('/delete_user/<int:id>')
+def delete_user(id):
+    if 'admin' not in session:
+        return redirect(url_for('admin_login'))
+    db = Database()
+    db.query('DELETE FROM users WHERE id = %s', (id,))
+    db.con.commit()
+    db.close()
+    return redirect(url_for('admin_dashboard'))
+
+
+@app.route('/edit_user/<int:id>', methods=['GET', 'POST'])
+def edit_user(id):
+    if 'admin' not in session:
+        return redirect(url_for('admin_login'))
+
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        email = request.form['email']
+
+        db = Database()
+        try:
+            hashed_password = hash_password(password)
+            db.query('UPDATE users SET username = %s, email = %s, password = %s WHERE id = %s',
+                     (username, email, hashed_password, id))
+            db.con.commit()
+            db.close()
+            print("User updated successfully")
+            return redirect(url_for('admin_dashboard'))
+        except Exception as e:
+            db.con.rollback()
+            db.close()
+            print(f"Error: {str(e)}")
+            return render_template('edit_user.html', error=str(e))
+    else:
+        db = Database()
+        user = db.query_one('SELECT * FROM users WHERE id = %s', (id,))
+        db.close()
+        return render_template('edit_user.html', user=user)
 
 
 if __name__ == '__main__':

@@ -4,14 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,700" rel="stylesheet">
-    <link rel="icon" type="image/png" href="/favicon.png">
     <title>Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Roboto Slab', serif;
-            background: linear-gradient(135deg, #3D7EAA 0%, #57B7FF 100%);
+            background: linear-gradient(135deg, #001f3f 0%, #0c5460 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -33,7 +31,7 @@
             width: 90%;
             margin: 0 auto;
             margin-bottom: 50px;
-            background-color: #FFFFFF;
+            background-color: #2b2b2b;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             border-radius: 5px;
         }
@@ -42,58 +40,54 @@
         td {
             text-align: center;
             padding: 10px;
-            border: 1px solid #ddd;
+            border: 1px solid #777;
             font-size: 1.2em;
-            color: #333;
+            color: #e6e6e6;
         }
 
         th {
-            background-color: #3D7EAA;
-            color: #FFFFFF;
+            background-color: #1d1d1d;
+            color: #fff;
         }
 
         tr:nth-child(even) {
-            background-color: #f2f2f2;
+            background-color: #292929;
         }
 
-        .admin-buttons {
+        .admin-buttons,
+        .action-buttons {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            width: 100%;
-            max-width: 600px;
-            margin-top: 30px;
+            margin-top: 20px;
         }
 
-        .admin-button {
-            display: inline-block;
-            padding: 10px 20px;
-            font-size: 1.2em;
-            font-weight: bold;
-            text-align: center;
+        .action-button {
+            color: #FFFF00;
             text-decoration: none;
-            color: #fff;
-            border-radius: 5px;
-            transition: background-color 0.3s, color 0.3s;
+            font-size: 1.3em;
+            padding: 4px 9px;
+            border: 2px solid #FFFF00;
+            border-radius: 50px;
+            background-color: transparent;
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+            margin: 0 10px;
         }
 
-        .admin-profile {
-            background-color: #3D7EAA;
-        }
 
-        .admin-logout {
-            background-color: #E63946;
-        }
 
-        .admin-button:hover {
-            background-color: #fff;
-            color: #333;
+        .admin-button:hover,
+        .action-button:hover {
+            text-decoration: none;
+            color: #001f3f;
+            background-color: #FFFF00;
+            box-shadow: 0px 0px 10px rgba(255, 255, 0, 0.5);
         }
     </style>
 </head>
 
 <body>
-    <h1>Welcome, {{ username }}!</h1>
+    <h1 class="dark-blue">Welcome, {{ username }}!</h1>
     <div class="admin-info">
         <table>
             <thead>
@@ -102,6 +96,7 @@
                     <th>Email</th>
                     <th>Password</th>
                     <th>Login Attempts</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -111,13 +106,19 @@
                     <td>{{ user[2] }}</td>
                     <td>{{ user[3] }}</td>
                     <td>{{ user[4] }}</td>
+                    <td>
+                        <a class="action-button edit-button" href="{{ url_for('edit_user', id=user[0]) }}">Edit</a>
+                        <a class="action-button delete-button"
+                            href="{{ url_for('delete_user', id=user[0]) }}">Delete</a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <div class="admin-buttons">
-            <a class="admin-button admin-profile" href="/admin_profile">Profile</a>
-            <a class="admin-button admin-logout" href="/home">Logout</a>
+        <div class="action-buttons">
+            <a class="action-button add-button" href="add_user.html">Add</a>
         </div>
     </div>
 </body>
+
+</html>
