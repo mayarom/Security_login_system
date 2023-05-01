@@ -191,11 +191,7 @@ def admin_profile():
     if 'admin' in session:
         db = Database()
         admin = db.query(
-            'SELECT * FROM admin_users WHERE username = %s', (session['admin'],))[0]
-        # desplay all details of admin  in admin_profile.html
-        
-        
-
+            'SELECT username, password, email FROM admin_users WHERE username = %s', (session['admin'],))[0]
         db.close()
         return render_template('admin_profile.html', admin=admin)
     else:
@@ -294,30 +290,23 @@ def edit_admin_profile():
 
 @app.route('/add_user', methods=['GET', 'POST'])
 def add_user():
-    if 'admin' not in session:
-        return redirect(url_for('admin_login'))
     if request.method == 'POST':
         username = request.form['username']
-        password = request.form['password']
         email = request.form['email']
+        password = request.form['password']
+        db=Database()
 
-        db = Database()
-        try:
-            hashed_password = hash_password(password)
-            db.query('INSERT INTO users (username, email, password) VALUES (%s, %s, %s)',
-                     (username, email, hashed_password))
-            db.con.commit()
-            db.close()
-            print("User added successfully")
-            return redirect(url_for('admin_dashboard'))
-        except Exception as e:
-            db.con.rollback()
-            db.close()
-            print(f"Error: {str(e)}")
-            return render_template('add_user.html', error=str(e))
+        # Insert new user into database
+        db.execute('INSERT INTO users (username, email, password) VALUES (%s, %s, %s)',
+                   (username, email, password))
+        db.commit()
 
-    else:
-        return render_template('add_user.html')
+        flash('User added successfully!', 'success')
+        return redirect(url_for('admin_dashboard'))
+
+    return render_template('add_user.html')
+
+  
 
 
 @app.route('/delete_user/<int:id>')

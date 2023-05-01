@@ -64,10 +64,9 @@
 
         .action-button {
             color: #FFFF00;
-            text-decoration: none;
-            font-size: 1.3em;
-            padding: 4px 9px;
-            border: 2px solid #FFFF00;
+            text-decoration: none; 
+            font-size: 1em;
+            padding: 3px 7px;
             border-radius: 50px;
             background-color: transparent;
             transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
@@ -116,7 +115,9 @@
             </tbody>
         </table>
         <div class="action-buttons">
-            <a class="action-button add-button" href="add_user.html">Add</a>
+            <a class="action-button add-button" href="{{url_for('add_user')}}">Add</a>
+            <a class="action-button logout-button" href="{{ url_for('logout') }}">Logout</a>
+            <a class="action-button profile-button" href="{{ url_for('admin_profile') }}">My Profile</a>
         </div>
     </div>
 </body>
